@@ -47,9 +47,12 @@ app.get('/searchJobs', function(req, res){
   		}
   	})
   	res.send(`The Generated Id for your response is ${req_id}`);
+  	res.send(`The Generated Id for your response is ${trackId}`);
+  	res.send(`The Generated Id for your response is ${body}`);
+  	res.send(`The Generated Id for your response is ${filename}`);
 })
 
-app.get('/searchJobs/:searchId', function(req, res){
+/*app.get('/searchJobs/:searchId', function(req, res){
 	var jobId = '362b3a32-e850-4f80-b7b6-b14685ede201';
  	if(req.params.searchId == jobId){
  		var filename = req.params.searchId + '.json';
@@ -62,4 +65,4 @@ app.get('/searchJobs/:searchId', function(req, res){
 			console.log('File Deleted');
 		});
  	}
-})
+})*/
