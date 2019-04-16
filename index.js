@@ -3,11 +3,15 @@ var bodyParser = require('body-parser');
 var http = require('http');
 var PORT = 3000;
 var app = express();
-var uuidv4 = require('uuidv4');
+/*var uuidv4 = require('uuidv4');
 var request = require('request');
 var fs = require('fs');
-
-
+var trackId = [];
+var reqId = uuidv4();
+var url = 'https://jobs.github.com/positions.json';
+var filename = reqId + '.json';*/
+const {search, searchById} = require('./search');
+// var searchById = require('./search');
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended : true}));
 
@@ -15,68 +19,56 @@ app.get('/', function(req, res){
 	res.send(`Github job api is running @ ${PORT}`)
 });
 
-app.listen(3000, function(req, res){
-	console.log("Server is running @ 3000");
+app.listen(PORT, function(req, res){
+	console.log(`Server is running @ ${PORT}`);
 });
 
 //search query
-app.get('/searchJobs', search);
-	
-	function search(req, res){
-		let trackId = [];
-		var req_id = uuidv4();
-		module.exports = trackId;
-		trackId.push(req_id);
-		console.log(trackId);
-		var filename = req_id + '.json';
-		console.log(filename);
-		var queryParameter = req.query;
-		request({
-	    	uri: 'https://jobs.github.com/positions.json?description='+ req.query.description +'&location='+ req.query.location,
-	    	
-	  	},function(err, res, body){
-	  		if(!err && res.statusCode === 200){
-	  			let data = [];
-	  			console.log(res.statusCode) 
-	    		console.log(res.headers['content-type'])
-	    		data.push(body);
-	    		fs.writeFile(`./files/${filename}`, data, function (err) {
-	  				if (err) throw err;
-	  				console.log('Saved!');
-				});
+app.get('/searchJobs', search);	
 
-				
+app.get('/searchJobs/:searchId', searchById);
+
+
+/*function search(req, res){					
+		request(url,function(err, res, body){
+	  		if(!err && res.statusCode === 200){	
+	  		var data = JSON.stringify(body);    		
+	    		fs.writeFile(`./files/${filename}`, data, function (err) {
+	  				if (err) 
+	  					console.log('An Error found while saving the response');
+	  				console.log('Saved!');
+				});				
+	  		} else {
+	  			res.statusCode === 500;
+	  			err = 'Fake Error to test the API';
+	  			console.log(err);
 	  		}
 	  	})
-	  	res.send(`The Generated Id for your response is ${req_id}`);
+	  	trackId.push(reqId);
+	  	res.send(`The Generated Id for your response is ${reqId}`);
 }
+*/
 
-app.get('/searchJobs/:searchId', function(req, res){
-	var jobId = require('./index');
+/*function searchById(req, res){
+	var jobId = trackId;
  	if(req.params.searchId == jobId){
- 		var filename = req.params.searchId + '.json';
- 		fs.readFile(`./files/${filename}`, 'utf-8' ,function(err, file) {
-   			res.send(file);
+ 		fs.readFile(`./files/${filename}`, function(err, data) {
+    		res.writeHead(200, {'Content-Type': 'text/json'});
+    		res.write(data);
+    		res.end();
   		});
   		fs.unlink(`./files/${filename}`, function(err){
 			if (err) throw err;
 			console.log('File Deleted');
 		});
-		jobId.shift();
-		console.log(jobId);
 		
+		var index = trackId.indexOf(reqId);
+		if (index >= 0) {
+  			trackId.splice( index, 1 );
+		}
+		console.log(trackId);
+		
+	} else {
+		res.send('Id does not exists');
 	}
-})
-/*removeTrackId(jobId);
-		function removeTrackid(arr) {
-    			var what, a = arguments, L = a.length, ax;
-    			while (L > 1 && arr.length) {
-        		what = a[--L];
-        		while ((ax= arr.indexOf(what)) !== -1) {
-            	arr.splice(ax, 1);
-        		}
-    		}
-    		return arr;
-		}*/
-
-
+}*/
