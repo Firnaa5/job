@@ -20,6 +20,8 @@ app.listen(PORT, function(req, res){
 //search query
 app.get('/searchJobs', search);	
 
+
 app.get('/searchJobs/:searchId', searchById);
+
 
 

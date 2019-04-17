@@ -28,8 +28,8 @@ exports.search = function (req, res){
 }
 
 exports.searchById = function (req, res){
-	var jobId = trackId;
- 	if(req.params.searchId == jobId){
+	var jobId = trackId.includes(req.params.searchId);
+ 	if(jobId == true){
  		fs.readFile(`./files/${filename}`, 'utf-8',function(err, data) {
     		res.status(200).json({
     		completed: true,
@@ -48,7 +48,7 @@ exports.searchById = function (req, res){
 		console.log(trackId);
 		
 	} else {
-		res.send('Id does not exists');
+		res.send('Id does not exists');		
 	}
 }
 
