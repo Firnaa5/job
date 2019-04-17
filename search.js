@@ -2,7 +2,6 @@ var uuidv4 = require('uuidv4');
 var request = require('request');
 var fs = require('fs');
 var trackId = [];
-var reqId = uuidv4();
 var url = 'https://jobs.github.com/positions.json';
 
 
